@@ -1,0 +1,44 @@
+header {
+  display: flex;
+}
+
+.signInAnimation {
+  background-color: white;
+  padding: 0 30px 10px;
+  border-radius: 10px;
+
+  animation-name: signInAnimation;
+  animation-duration: 1.5s;
+
+  @keyframes signInAnimation {
+    0% {
+      transform: translateY(-120px);
+    }
+    70% {
+      transform: translateY(0px);
+    }
+    85% {
+      transform: translateY(-30px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+}
+
+.SignInRedTextField fieldset {
+  border-color: red !important;
+  outline-color: red !important;
+}
+
+.SignInGreenTextField fieldset {
+  border-color: lightgreen !important;
+  outline-color: lightgreen !important;
+}
+
+footer {
+  background-color: #3f51b5;
+  display: block;
+  height: 80px;
+  box-sizing: border-box;
+}
