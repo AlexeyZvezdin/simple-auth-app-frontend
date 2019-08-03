@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import SignInFormBox from "./components/SignInFormBox";
 import MainAppBar from "./components/MainAppBar";
 import RegisterFormBox from "./components/RegisterFormBox";
-import PrivateRoute, { Profile } from "./components/Profile";
+import PrivateRoute from "./components/Profile";
 // import Dialog from "./components/Dialog";
 import { Main } from "./components/Main";
 import Footer from "./components/Footer";

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { Route, Redirect } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -24,31 +24,43 @@ class Profile extends Component {
   }
 }
 
-export default function PrivateRoute(props) {
-  const token = Cookies.get("token");
-  // Тут менял
-  let isValidToken = false;
-  if (!token) {
-    axios.post("http://localhost:4000/verify", token).then(res => {
-      console.log(res, " THIS IS RESPONSE FROM VERIFY IN PROFILE");
-      isValidToken = res.body;
+export default class PrivateRoute extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  state = {
+    id: false
+  };
+
+  componentDidMount() {
+    const token = Cookies.get("token");
+    // Тут менял
+
+    axios.post("http://localhost:4000/verify", { token: token }).then(res => {
+      console.log(res.data.id, " valid token");
+      this.setState({ id: res.data.id });
     });
   }
-  console.log("ISValidRToek: ", isValidToken);
-  return (
-    <Route
-      render={props =>
-        !isValidToken ? (
-          <Profile {...props} />
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/",
-              state: { from: props.location }
-            }}
-          />
-        )
-      }
-    />
-  );
+
+  render() {
+    const { id } = this.state;
+    console.log(id, " id token");
+    return (
+      <Route
+        render={props =>
+          id ? (
+            <Profile {...props} />
+          ) : (
+            <Redirect
+              to={{
+                pathname: "/",
+                state: { from: props.location }
+              }}
+            />
+          )
+        }
+      />
+    );
+  }
 }
