@@ -144,6 +144,9 @@ class SignInFormBox extends React.Component {
         email: this.state.fields.email,
         password: this.state.fields.password
       };
+      this.setState({
+        _loading: true
+      });
 
       return await axios
         .post("http://localhost:4000/", {
@@ -157,7 +160,7 @@ class SignInFormBox extends React.Component {
 
             this.setState({
               _loginIsUndefined: true,
-
+              _loading: false,
               checks: {
                 password: null,
                 email: null
@@ -198,6 +201,7 @@ class SignInFormBox extends React.Component {
             buttonActive={this.state._signInButtonActive}
             CheckboxRemember={this.CheckboxRemember}
             onSubmit={this.onSubmit}
+            _loading={this.state._loading}
           />
         </BackBox>
       </React.Fragment>

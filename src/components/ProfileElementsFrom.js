@@ -110,6 +110,7 @@ export default class ProfileInfoBox extends React.Component {
   }
 
   state = {
+    // disabled должен работать глобальнее
     disabled: true,
     isEditing: false,
     fields: {
@@ -125,7 +126,12 @@ export default class ProfileInfoBox extends React.Component {
   };
 
   componentDidMount() {
-    console.log("I've Mounted");
+    console.log(this.props);
+    this.setState({
+      fields: {
+        name: this.props.name
+      }
+    });
   }
 
   handleEdit = () => {

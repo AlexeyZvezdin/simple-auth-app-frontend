@@ -13,12 +13,42 @@ import ProfileInfoBox, {
 class Profile extends Component {
   constructor(props) {
     super(props);
+
+    this.id = this.props.id;
   }
+
+  state = {
+    name: null,
+    city: null,
+    country: null,
+    surname: null,
+    email: null
+  };
+
+  componentDidMount() {
+    axios
+      .get("http://localhost:4000/profile", {
+        params: {
+          id: this.id
+        }
+      })
+      .then(res => {
+        let { name, surname, city, country } = res.data;
+        console.log(res.data, " THIS IS RES GET PROFILE FRONT");
+        this.setState({
+          name: name,
+          surname: surname,
+          city: city,
+          country: country
+        });
+      });
+  }
+
   render() {
     return (
       <ProfileBox>
         <ProfileHeader>Profile</ProfileHeader>
-        <ProfileInfoBox {...this.props} />
+        <ProfileInfoBox {...this.props} {...this.state} />
       </ProfileBox>
     );
   }
@@ -30,7 +60,8 @@ export default class PrivateRoute extends Component {
   }
 
   state = {
-    id: false
+    isIdRecieved: false,
+    _isloading: true
   };
 
   componentDidMount() {
@@ -39,23 +70,27 @@ export default class PrivateRoute extends Component {
 
     axios.post("http://localhost:4000/verify", { token: token }).then(res => {
       console.log(res.data.id, " valid token");
-      this.setState({ id: res.data.id });
+      this.setState({ isIdRecieved: res.data.id, _isloading: false });
     });
   }
 
   render() {
-    const { id } = this.state;
-    console.log(id, " id token");
+    console.log(this.state.isIdRecieved, " id token");
+    console.log(this.props.location);
     return (
       <Route
-        render={props =>
-          id ? (
-            <Profile {...props} />
+        extact
+        path="/profile"
+        render={() =>
+          this.state._isloading ? (
+            ""
+          ) : !this.state._isloading && this.state.isIdRecieved ? (
+            <Profile {...this.props} id={this.state.isIdRecieved} />
           ) : (
             <Redirect
               to={{
                 pathname: "/",
-                state: { from: props.location }
+                state: { from: this.props.location }
               }}
             />
           )

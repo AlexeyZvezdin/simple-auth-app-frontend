@@ -100,6 +100,15 @@ export default function SignIn(props) {
           ) : (
             ""
           )}
+
+          {props._loading ? (
+            <p style={{ color: "blue", margin: "0 auto", fontSize: "1.3em" }}>
+              Loading...
+            </p>
+          ) : (
+            ""
+          )}
+
           {props.buttonActive === true ? (
             <Button
               type="submit"
