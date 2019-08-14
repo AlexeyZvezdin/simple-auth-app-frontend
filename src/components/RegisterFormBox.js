@@ -48,12 +48,10 @@ export default class RegisterFormBox extends React.Component {
       let val = await this.setHintClassName(true);
       this.dispatchPassClassName(val);
       this.CheckFields();
-      console.log("Pass is true", this.state);
       return;
     }
 
     if (pass === null || pass.length < 2) {
-      console.log(this.state, " ETO DEFAULT pass");
       let val = await this.setHintClassName(null);
       this.dispatchPassClassName(val);
       return;
@@ -130,7 +128,6 @@ export default class RegisterFormBox extends React.Component {
 
   onSubmit = async e => {
     e.preventDefault();
-    console.log(e.target.password.value);
     // тут бинарка на маунт анимации загрузки
     // register true и всё можно два запроса обработать
     if ((await this.CheckFields()) === true) {
@@ -139,7 +136,6 @@ export default class RegisterFormBox extends React.Component {
         password: this.state.fields.password,
         register: true
       };
-      console.log("WORKING FROM ONSUBMIT");
       // здесь пропись в бд и респонс с успехом
       return await axios
         .post("http://localhost:4000/", {
@@ -166,7 +162,7 @@ export default class RegisterFormBox extends React.Component {
             return;
           } else {
             console.log(res.data, " ВЫ УСПЕШНО ЗАРЕГЕСТРИРОВАНЫ \n");
-            // После этого
+            // После этого диспатч в топ и редирект, сокрытие кнопок и форм
             this.props.handleOnClick();
             return res.data;
           }
@@ -183,6 +179,7 @@ export default class RegisterFormBox extends React.Component {
         <BackBox>
           <Register
             {...this.props}
+            _loginIsUndefined={this.state._loginIsUndefined}
             comparePasswords={this.comparePasswords}
             changeEmail={this.onChangeEmail}
             emailClassName={this.state.SignInEmailColor}

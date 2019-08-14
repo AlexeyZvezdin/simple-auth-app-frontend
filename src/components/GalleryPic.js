@@ -43,22 +43,23 @@ export default class GalleryPic extends Component {
   }
 
   componentDidMount() {
+    let gallery = () => {
+      switch (this.state.src) {
+        case crane:
+          return this.setState({ src: swan });
+        case swan:
+          return this.setState({ src: flamingo });
+        case flamingo:
+          return this.setState({ src: crane });
+      }
+    };
     this._isMounted = true;
-    this._isMounted &&
-      setInterval(() => {
-        switch (this.state.src) {
-          case crane:
-            return this.setState({ src: swan });
-          case swan:
-            return this.setState({ src: flamingo });
-          case flamingo:
-            return this.setState({ src: crane });
-        }
-      }, 5000);
+    this._isMounted && setInterval(gallery, 5000);
   }
 
   componentWillUnmount() {
     this._isMounted = false;
+    clearInterval(gallery);
   }
 
   render() {

@@ -114,6 +114,13 @@ export default function Register(props) {
               Sign Up
             </Button>
           )}
+          {props._loginIsUndefined ? (
+            <p style={{ color: "red", fontSize: "1.4em" }}>
+              This user already registered!
+            </p>
+          ) : (
+            ""
+          )}
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">

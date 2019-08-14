@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import axios from "axios";
+import ProfileField from "./ProfileElementsField";
 
 const ProfileBox = styled.div`
   padding-top: 1px;
@@ -58,21 +59,6 @@ const ProfileFieldHint = styled.div`
   color: #c0bbbb;
 `;
 
-const ProfileField = styled.input`
-  width: ${props => (props.long ? "360px" : "202.5px")};
-  height: 60px;
-  background: ${props => (props.filled || !props.disabled ? "" : "#c4c4c4")};
-  border-radius: 6px;
-  border: ${props =>
-    props.filled || !props.disabled ? "1px solid #440d0f" : "none"};
-  outline: none;
-  font-family: ${props => (props.filled ? "PT Mono" : "")};
-  font-size: 26px;
-  box-sizing: border-box;
-  padding-left: ${props => (props.long ? "18px" : "12px")};
-  color: #c0bbbb;
-`;
-
 const ProfileButton = styled.div`
   display: flex;
   align-items: center;
@@ -114,25 +100,16 @@ export default class ProfileInfoBox extends React.Component {
     disabled: true,
     isEditing: false,
     fields: {
-      name: "",
-      surname: "",
-      country: "",
-      city: ""
+      name: this.props.name,
+      surname: this.props.surname,
+      country: this.props.country,
+      city: this.props.city
     },
     impFields: {
       password: "",
       email: ""
     }
   };
-
-  componentDidMount() {
-    console.log(this.props);
-    this.setState({
-      fields: {
-        name: this.props.name
-      }
-    });
-  }
 
   handleEdit = () => {
     this.setState({
@@ -160,18 +137,20 @@ export default class ProfileInfoBox extends React.Component {
             <ProfileFieldHint>Name</ProfileFieldHint>
             <ProfileField
               type="text"
-              name="profile_name"
+              name="name"
               disabled={this.state.disabled ? "disabled" : ""}
-              onClick={() => console.log("Click from Profile field Name")}
+              defVal={this.state.fields.name}
+              inputChange={this.props.onInputFieldChange}
             />
           </ProfileDataBox>
           <ProfileDataBox>
             <ProfileFieldHint>Surname</ProfileFieldHint>
             <ProfileField
               type="text"
-              name="profile_surname"
+              name="surname"
               disabled={this.state.disabled ? "disabled" : ""}
-              onClick={() => console.log("Click from Profile field Surname")}
+              defVal={this.state.fields.surname}
+              inputChange={this.props.onInputFieldChange}
             />
           </ProfileDataBox>
         </NestingBox>
@@ -180,18 +159,20 @@ export default class ProfileInfoBox extends React.Component {
             <ProfileFieldHint>Country</ProfileFieldHint>
             <ProfileField
               type="text"
-              name="country_name"
+              name="country"
+              defVal={this.state.fields.country}
               disabled={this.state.disabled ? "disabled" : ""}
-              onClick={() => console.log("Click from Profile field Country")}
+              inputChange={this.props.onInputFieldChange}
             />
           </ProfileDataBox>
           <ProfileDataBox>
             <ProfileFieldHint>City</ProfileFieldHint>
             <ProfileField
               type="text"
-              name="city_surname"
+              name="city"
+              defVal={this.state.fields.city}
               disabled={this.state.disabled ? "disabled" : ""}
-              onClick={() => console.log("Click from Profile field City")}
+              inputChange={this.props.onInputFieldChange}
             />
           </ProfileDataBox>
         </NestingBox>
