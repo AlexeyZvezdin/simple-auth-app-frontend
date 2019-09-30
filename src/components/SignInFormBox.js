@@ -30,110 +30,6 @@ class SignInFormBox extends React.Component {
     SignInPasswordColor: "null"
   };
 
-  onChangePass = async e => {
-    let pass = e.target.value;
-
-    if (pass.length > 6) {
-      let checkMail = this.state.checks.email;
-      let fieldMail = this.state.fields.email;
-      await this.setState({
-        fields: {
-          password: pass,
-          email: fieldMail
-        },
-        checks: {
-          password: true,
-          email: checkMail
-        }
-      });
-      let val = await this.setHintClassName(true);
-      this.dispatchPassClassName(val);
-      this.CheckFields();
-      // console.log("Pass is true", this.state);
-      if (this.state._loginIsUndefined === true) {
-        return this.setState({ _loginIsUndefined: false });
-      }
-      return;
-    }
-
-    if (pass === null || pass.length < 2) {
-      // console.log(this.state, " ETO DEFAULT pass");
-      let val = await this.setHintClassName(null);
-      this.dispatchPassClassName(val);
-      return;
-    }
-
-    if (pass.length > 2 && pass.length <= 6) {
-      let checkMail = this.state.checks.email;
-      let fieldMail = this.state.fields.email;
-      await this.setState({
-        fields: {
-          password: pass,
-          email: fieldMail
-        },
-        checks: {
-          password: false,
-          email: checkMail
-        }
-      });
-      let val = await this.setHintClassName(false);
-      this.dispatchPassClassName(val);
-      // console.log("Pass is false", this.state);
-      return;
-    }
-  };
-
-  onChangeEmail = async e => {
-    let email = e.target.value;
-    if (isEmail(email) === true) {
-      let checkPass = this.state.checks.password;
-      let fieldPass = this.state.fields.password;
-      await this.setState({
-        fields: {
-          password: fieldPass,
-          email: email
-        },
-        checks: {
-          password: checkPass,
-          email: true
-        }
-      });
-      let val = await this.setHintClassName(true);
-      this.dispatchEmailClassName(val);
-      this.CheckFields();
-      if (this.state._loginIsUndefined === true) {
-        return this.setState({ _loginIsUndefined: false });
-      }
-      return;
-    }
-
-    if (email === null || email.length < 3) {
-      let val = await this.setHintClassName(null);
-      this.dispatchEmailClassName(val);
-      return;
-    }
-
-    if (isEmail(email) === false) {
-      let checkPass = this.state.checks.password;
-      let fieldPass = this.state.fields.password;
-      await this.setState({
-        fields: {
-          password: fieldPass,
-          email: email
-        },
-        checks: {
-          password: checkPass,
-          email: false
-        }
-      });
-      // console.log("NYET ETO NE TAK");
-      // console.log(this.state);
-      let val = await this.setHintClassName(false);
-      this.dispatchEmailClassName(val);
-      return;
-    }
-  };
-
   onSubmit = async e => {
     e.preventDefault();
     // console.log(e.target.password.value);
@@ -195,12 +91,7 @@ class SignInFormBox extends React.Component {
           <SignIn
             {...this.props}
             _loginIsUndefined={this.state._loginIsUndefined}
-            changeEmail={this.onChangeEmail}
-            emailClassName={this.state.SignInEmailColor}
-            passwordClassName={this.state.SignInPasswordColor}
-            changePass={this.onChangePass}
             buttonActive={this.state._signInButtonActive}
-            CheckboxRemember={this.CheckboxRemember}
             onSubmit={this.onSubmit}
             _loading={this.state._loading}
           />
@@ -221,38 +112,6 @@ class SignInFormBox extends React.Component {
       });
       return false;
     }
-  };
-
-  dispatchEmailClassName = async val => {
-    await this.setState({
-      SignInEmailColor: val
-    });
-  };
-
-  dispatchPassClassName = async val => {
-    await this.setState({
-      SignInPasswordColor: val
-    });
-  };
-
-  setHintClassName = val => {
-    switch (val) {
-      case true:
-        return "SignInGreenTextField";
-      case false:
-        return "SignInRedTextField";
-      case null:
-        return "";
-      default:
-        return "";
-    }
-  };
-
-  CheckboxRemember = async () => {
-    await this.setState({
-      _rememberMeCheckBox: !this.state._rememberMeCheckBox
-    });
-    console.log(this.state._rememberMeCheckBox, ": RememberMeCheckBox\n");
   };
 }
 
