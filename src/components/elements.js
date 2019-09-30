@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const RottenBox = styled.div`
   padding-top: 10px;
@@ -56,11 +57,10 @@ const CloseButton = styled.div`
   }
 `;
 
-const GalleryPicture = styled.img`
+const GalleryPicture = styled(LazyLoadImage)`
   display: block;
-  width: 100%;
   object-fit: cover;
-  max-height: 400px;
+  background-image: url(${props => props.dataSrc});
 `;
 
 const PrevSlide = styled.span`

@@ -3,15 +3,14 @@ import { connect } from "react-redux";
 import isEmail from "validator/lib/isEmail";
 import SignIn from "./SignIn";
 import { BackBox } from "./elements";
-import { loggingSignIn } from "./redux/actions/index";
 import axios from "axios";
 import { withRouter } from "react-router";
 import Cookies from "js-cookie";
+import { sign_in, sign_out, loggingSignIn } from "./redux/actions/index";
 
 class SignInFormBox extends React.Component {
   constructor(props) {
     super(props);
-    // console.log(props, "1 props");
   }
 
   state = {
@@ -177,6 +176,8 @@ class SignInFormBox extends React.Component {
               " THIS SHOULD BE A COOKIES GET \n"
             );
             this.props.handleOnClick();
+            console.log(this.props);
+            this.props.sign_in();
             this.props.history.push("/profile");
             return res.data;
           }
@@ -255,4 +256,9 @@ class SignInFormBox extends React.Component {
   };
 }
 
-export default withRouter(connect()(SignInFormBox));
+export default withRouter(
+  connect(
+    null,
+    { sign_in, sign_out }
+  )(SignInFormBox)
+);

@@ -41,13 +41,13 @@ function ButtonAppBar(props) {
   );
 }
 
-export default class MainAppBar extends React.Component {
-  render() {
-    return (
-      <ButtonAppBar
-        handleSignInOnClick={this.props.handleSignInOnClick}
-        handleRegisterOnClick={this.props.handleRegisterOnClick}
-      />
-    );
-  }
+export default function MainAppBar(props) {
+  console.log(props, " props mainappbar");
+
+  return (
+    <ButtonAppBar
+      handleSignInOnClick={props.handleSignInOnClick}
+      handleRegisterOnClick={props.handleRegisterOnClick}
+    />
+  );
 }

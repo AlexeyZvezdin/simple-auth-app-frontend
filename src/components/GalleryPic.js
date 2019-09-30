@@ -9,52 +9,58 @@ import {
   NextSlide
 } from "./elements";
 
-export default class GalleryPic extends Component {
+function GalleryPic() {
+  let birds = { swan, crane, flamingo };
+  return <ImgRenderProps birds={birds} />;
+}
+
+class ImgRenderProps extends Component {
   constructor(props) {
     super(props);
 
+    this.birds = this.props.birds;
     this._isMounted = false;
   }
 
   state = {
-    src: crane
+    src: "crane"
   };
 
   switchNextPic(initialState) {
     switch (this.state.src) {
-      case crane:
-        return this.setState({ src: swan });
-      case swan:
-        return this.setState({ src: flamingo });
-      case flamingo:
-        return this.setState({ src: crane });
+      case "crane":
+        return this.setState({ src: "swan" });
+      case "swan":
+        return this.setState({ src: "flamingo" });
+      case "flamingo":
+        return this.setState({ src: "crane" });
     }
   }
 
   switchPrevPic(initialState) {
     switch (this.state.src) {
-      case crane:
-        return this.setState({ src: flamingo });
-      case swan:
-        return this.setState({ src: crane });
-      case flamingo:
-        return this.setState({ src: swan });
+      case "crane":
+        return this.setState({ src: "flamingo" });
+      case "swan":
+        return this.setState({ src: "crane" });
+      case "flamingo":
+        return this.setState({ src: "swan" });
     }
   }
 
   componentDidMount() {
     let gallery = () => {
       switch (this.state.src) {
-        case crane:
-          return this.setState({ src: swan });
-        case swan:
-          return this.setState({ src: flamingo });
-        case flamingo:
-          return this.setState({ src: crane });
+        case "crane":
+          return this.setState({ src: "swan" });
+        case "swan":
+          return this.setState({ src: "flamingo" });
+        case "flamingo":
+          return this.setState({ src: "crane" });
       }
     };
     this._isMounted = true;
-    this._isMounted && setInterval(gallery, 5000);
+    this._isMounted && setInterval(gallery, 4000);
   }
 
   componentWillUnmount() {
@@ -63,16 +69,24 @@ export default class GalleryPic extends Component {
   }
 
   render() {
+    let src = this.state.src;
     return (
       <GalleryPicBox>
-        <PrevSlide onClick={() => this.switchPrevPic(this.state.src)}>
+        <PrevSlide onClick={() => this.switchPrevPic(this[src])}>
           &lt;
         </PrevSlide>
-        <GalleryPicture alt="gallery" src={this.state.src} />
-        <NextSlide onClick={() => this.switchNextPic(this.state.src)}>
+        <GalleryPicture
+          alt="gallery"
+          src={this.props.birds[src]}
+          width="100%"
+          height="496px"
+        />
+        <NextSlide onClick={() => this.switchNextPic(this[src])}>
           &gt;
         </NextSlide>
       </GalleryPicBox>
     );
   }
 }
+
+export default GalleryPic;

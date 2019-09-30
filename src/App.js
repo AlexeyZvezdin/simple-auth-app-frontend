@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import "normalize.css";
@@ -54,10 +53,6 @@ class App extends React.Component {
     console.log("sign out");
   };
 
-  onSignIn = () => {
-    console.log("sign in");
-  };
-
   render() {
     return (
       <Router>
@@ -72,10 +67,7 @@ class App extends React.Component {
           />
         )}
         {this.state.showSignInPopUp === true ? (
-          <SignInFormBox
-            handleOnClick={this.handleSignInOnClick}
-            onSignIn={this.onSignIn}
-          />
+          <SignInFormBox handleOnClick={this.handleSignInOnClick} />
         ) : (
           ""
         )}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -13,6 +13,8 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { CloseButton } from "./elements.js";
+import validatePass from "../components/helpers/validatePass.js";
+import validateEmail from "../components/helpers/validateEmail";
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -41,8 +43,70 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignIn(props) {
   const classes = useStyles();
-  // console.log(props, "2 props");
-  // console.log(document.getElementById("email"));
+  // validation
+
+  const [state, setState] = useState({
+    // @prettier-ignore
+    fields: { password: null, email: null },
+    checks: { password: null, email: null },
+    rememberMeCheckBox: false
+  });
+
+  const [visualState, setVisualState] = useState({
+    // @prettier-ignore
+    loading: false,
+    SignInButtonActive: false,
+    SignInEmailClass: "null",
+    SignInPasswordClass: "null"
+  });
+  // _loginIsUndefined: false,  ==> For future
+  // hint coloring through classes
+  // весь стейт в один стейт классы в другой
+
+  const changeEmail = e => {
+    validateEmail(e.target.value).then(res => {
+      setState({
+        ...state,
+        checks: {
+          ...state.checks,
+          email: true
+        },
+        fields: {
+          ...state.fields,
+          email: res.Email
+        }
+      });
+      setVisualState({
+        ...visualState,
+        SignInEmailClass: res.SignInEmailClass
+      });
+      console.log(state);
+    });
+  };
+
+  const changePass = e => {
+    validatePass(e.target.value)
+      .then(res => {
+        setState({
+          ...state,
+          checks: {
+            ...state.checks,
+            password: true
+          },
+          fields: {
+            ...state.fields,
+            password: res.Password
+          }
+        });
+        setVisualState({
+          ...visualState,
+          SignInPasswordClass: res.SignInPasswordClass
+        });
+      })
+      .then(() => console.log(state));
+    // then check both fields and show button
+  };
+
   return (
     <Container component="main" maxWidth="xs" className="signInAnimation">
       <CssBaseline />
@@ -56,7 +120,7 @@ export default function SignIn(props) {
         </Typography>
         <form className={classes.form} onSubmit={props.onSubmit} noValidate>
           <TextField
-            className={props.emailClassName}
+            className={visualState.SignInEmailClass}
             variant="outlined"
             margin="normal"
             required
@@ -66,10 +130,10 @@ export default function SignIn(props) {
             name="email"
             autoComplete="email"
             autoFocus
-            onChange={props.changeEmail}
+            onChange={e => changeEmail(e)}
           />
           <TextField
-            className={props.passwordClassName}
+            className={visualState.SignInPasswordClass}
             variant="outlined"
             margin="normal"
             required
@@ -79,14 +143,19 @@ export default function SignIn(props) {
             type="password"
             id="password"
             autoComplete="current-password"
-            onChange={props.changePass}
+            onChange={e => changePass(e)}
           />
           <FormControlLabel
             control={
               <Checkbox
                 value="remember"
                 color="primary"
-                onChange={props.CheckboxRemember}
+                onChange={() =>
+                  setState({
+                    ...state,
+                    rememberMeCheckBox: true
+                  })
+                }
               />
             }
             label="Remember me"

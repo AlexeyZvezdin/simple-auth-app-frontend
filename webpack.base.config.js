@@ -1,14 +1,27 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const Dotenv = require("dotenv-webpack");
+const copyWebpackPlugin = require("copy-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+
+const PATHS = {
+  src: path.join(__dirname, "./src"),
+  dist: path.join(__dirname, "../dist"),
+  assets: "assets/"
+};
 
 module.exports = {
+  externals: {
+    paths: PATHS
+  },
   entry: {
-    app: path.resolve(__dirname, "./src/index.js")
+    // app: path.resolve(__dirname, "./src/index.js")
+    app: PATHS.src
   },
   output: {
     filename: "[name].js",
-    path: path.resolve(__dirname, "../dist"),
+    // path: path.resolve(__dirname, "../dist"),
+    path: PATHS.dist,
     publicPath: "/"
   },
   module: {
@@ -80,22 +93,37 @@ module.exports = {
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
-        use: ["file-loader"]
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].[ext]"
+            }
+          }
+        ]
       }
     ]
   },
 
-  devServer: {
-    overlay: true,
-    contentBase: "./public",
-    historyApiFallback: true
-  },
-
   plugins: [
     new MiniCssExtractPlugin({
-      filename: "[name].css",
-      publicPath: "./dist"
+      filename: `[name].css`,
+      publicPath: PATHS.dist
     }),
+    new HtmlWebpackPlugin({
+      hash: true,
+      template: `${PATHS.src}/index.html`
+    }),
+    new copyWebpackPlugin([
+      // { from: `${PATHS.src}/assets`, to: `${PATHS.assets}` },
+      { from: `${PATHS.src}/static`, to: `` }
+    ]),
     new Dotenv()
   ]
 };
+
+// devServer: {
+//   overlay: true,
+//   contentBase: "./public",
+//   historyApiFallback: true
+// },
