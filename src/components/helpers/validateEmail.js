@@ -3,7 +3,11 @@ import isEmail from "validator/lib/isEmail";
 const validateEmail = email =>
   new Promise((resolve, reject) => {
     if (isEmail(email) === true) {
-      resolve({ SignInEmailClass: "SignInGreenTextField", Email: email });
+      resolve({
+        SignInEmailClass: "SignInGreenTextField",
+        Email: email,
+        Check: true
+      });
     } else if (isEmail(email) === false && email.length > 2) {
       resolve({ SignInEmailClass: "SignInRedTextField", Email: email });
     } else {

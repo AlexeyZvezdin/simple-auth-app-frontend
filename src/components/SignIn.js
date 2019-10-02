@@ -52,16 +52,16 @@ export default function SignIn(props) {
     rememberMeCheckBox: false
   });
 
+  const [serverState, setServerState] = useState({
+    loading: false,
+    loginIsUndefined: false
+  });
+
   const [visualState, setVisualState] = useState({
     // @prettier-ignore
-    loading: false,
-    SignInButtonActive: false,
     SignInEmailClass: "null",
     SignInPasswordClass: "null"
   });
-  // _loginIsUndefined: false,  ==> For future
-  // hint coloring through classes
-  // весь стейт в один стейт классы в другой
 
   const changeEmail = e => {
     validateEmail(e.target.value).then(res => {
@@ -69,7 +69,7 @@ export default function SignIn(props) {
         ...state,
         checks: {
           ...state.checks,
-          email: true
+          email: res.Check
         },
         fields: {
           ...state.fields,
@@ -80,7 +80,7 @@ export default function SignIn(props) {
         ...visualState,
         SignInEmailClass: res.SignInEmailClass
       });
-      console.log(state);
+      console.log(...state);
     });
   };
 
@@ -91,7 +91,7 @@ export default function SignIn(props) {
           ...state,
           checks: {
             ...state.checks,
-            password: true
+            password: res.Check
           },
           fields: {
             ...state.fields,
@@ -160,7 +160,7 @@ export default function SignIn(props) {
             }
             label="Remember me"
           />
-          {props._loginIsUndefined === true ? (
+          {serverState.loginIsUndefined === true ? (
             <span style={{ color: "red" }}>
               {" "}
               <br />
@@ -170,7 +170,7 @@ export default function SignIn(props) {
             ""
           )}
 
-          {props._loading ? (
+          {serverState.loading ? (
             <p style={{ color: "blue", margin: "0 auto", fontSize: "1.3em" }}>
               Loading...
             </p>
@@ -178,7 +178,7 @@ export default function SignIn(props) {
             ""
           )}
 
-          {props.buttonActive === true ? (
+          {state.checks.email && state.checks.password ? (
             <Button
               type="submit"
               fullWidth

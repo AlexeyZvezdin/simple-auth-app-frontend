@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -13,6 +13,9 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { CloseButton } from "./elements";
+
+import validatePass from "../components/helpers/validatePass.js";
+import validateEmail from "../components/helpers/validateEmail";
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -41,6 +44,89 @@ const useStyles = makeStyles(theme => ({
 
 export default function Register(props) {
   const classes = useStyles();
+
+  const [state, setState] = useState({
+    // @prettier-ignore
+    fields: { password: null, email: null },
+    checks: { password: null, email: null },
+    rememberMeCheckBox: false,
+    passEquality: null
+  });
+
+  const [serverState, setServerState] = useState({
+    loading: false,
+    loginAlreadyExists: false
+  });
+
+  const [visualState, setVisualState] = useState({
+    // @prettier-ignore
+    SignInEmailClass: "null",
+    SignInPasswordClass: "null"
+  });
+
+  const comparePasswords = e => {
+    let confirmPass = e.target.value;
+
+    if (
+      state.checks.password === true &&
+      confirmPass === state.fields.password
+    ) {
+      setState({
+        ...state,
+        passEquality: true
+      });
+    } else {
+      setState({
+        ...state,
+        passEquality: false
+      });
+    }
+  };
+
+  const changeEmail = e => {
+    validateEmail(e.target.value).then(res => {
+      setState({
+        ...state,
+        checks: {
+          ...state.checks,
+          email: res.Check
+        },
+        fields: {
+          ...state.fields,
+          email: res.Email
+        }
+      });
+      setVisualState({
+        ...visualState,
+        SignInEmailClass: res.SignInEmailClass
+      });
+      console.log(state);
+    });
+  };
+
+  const changePass = e => {
+    validatePass(e.target.value)
+      .then(res => {
+        setState({
+          ...state,
+          checks: {
+            ...state.checks,
+            password: res.Check
+          },
+          fields: {
+            ...state.fields,
+            password: res.Password
+          }
+        });
+        setVisualState({
+          ...visualState,
+          SignInPasswordClass: res.SignInPasswordClass
+        });
+      })
+      .then(() => console.log(state));
+    // then check both fields and show button
+  };
+
   return (
     <Container component="main" maxWidth="xs" className="signInAnimation">
       <CssBaseline />
@@ -54,7 +140,7 @@ export default function Register(props) {
         </Typography>
         <form className={classes.form} noValidate onSubmit={props.onSubmit}>
           <TextField
-            className={props.emailClassName}
+            className={visualState.SignInEmailClass}
             variant="outlined"
             margin="normal"
             required
@@ -64,10 +150,10 @@ export default function Register(props) {
             name="email"
             autoComplete="email"
             autoFocus
-            onChange={props.changeEmail}
+            onChange={e => changeEmail(e)}
           />
           <TextField
-            className={props.passwordClassName}
+            className={visualState.SignInPasswordClass}
             variant="outlined"
             margin="normal"
             required
@@ -77,10 +163,13 @@ export default function Register(props) {
             type="password"
             id="password"
             autoComplete="current-password"
-            onChange={props.changePass}
+            onChange={e => changePass(e)}
           />
           <TextField
-            onChange={props.comparePasswords}
+            className={
+              state.passEquality === true ? visualState.SignInPasswordClass : ""
+            }
+            onChange={e => comparePasswords(e)}
             variant="outlined"
             margin="normal"
             required
@@ -91,8 +180,8 @@ export default function Register(props) {
             id="password_check"
             autoComplete="current-password"
           />
-          {/* тут сменить на disabled={props.buttonActive?: disabled} */}
-          {props.buttonActive == true ? (
+          {/* disabled={props.buttonActive?: disabled} */}
+          {state.passEquality === true && state.checks.email === true ? (
             <Button
               type="submit"
               fullWidth
@@ -114,7 +203,7 @@ export default function Register(props) {
               Sign Up
             </Button>
           )}
-          {props._loginIsUndefined ? (
+          {serverState.loginAlreadyExists ? (
             <p style={{ color: "red", fontSize: "1.4em" }}>
               This user already registered!
             </p>

@@ -24,10 +24,7 @@ class SignInFormBox extends React.Component {
     },
     _loading: false,
     _rememberMeCheckBox: false,
-    _signInButtonActive: false,
-    _loginIsUndefined: false,
-    SignInEmailColor: "null",
-    SignInPasswordColor: "null"
+    _loginIsUndefined: false
   };
 
   onSubmit = async e => {
@@ -91,7 +88,6 @@ class SignInFormBox extends React.Component {
           <SignIn
             {...this.props}
             _loginIsUndefined={this.state._loginIsUndefined}
-            buttonActive={this.state._signInButtonActive}
             onSubmit={this.onSubmit}
             _loading={this.state._loading}
           />
@@ -99,20 +95,6 @@ class SignInFormBox extends React.Component {
       </React.Fragment>
     );
   }
-
-  CheckFields = () => {
-    if (this.state.checks.email && this.state.checks.password) {
-      this.setState({
-        _signInButtonActive: true
-      });
-      return true;
-    } else {
-      this.setState({
-        _signInButtonActive: false
-      });
-      return false;
-    }
-  };
 }
 
 export default withRouter(
