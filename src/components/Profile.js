@@ -8,8 +8,6 @@ import ProfileInfoBox, {
   ProfileHeader
 } from "./ProfileElementsFrom";
 
-// Убрать стайлд потом
-
 class Profile extends Component {
   constructor(props) {
     super(props);
@@ -95,11 +93,8 @@ export default class PrivateRoute extends Component {
   };
 
   componentDidMount() {
-    const token = Cookies.get("token");
-    // Тут менял
-
     return axios
-      .post("http://localhost:4000/verify", { token: token })
+      .post("http://localhost:4000/verify")
       .then(res => {
         console.log(res.data.id, " valid token");
         this.setState({ isIdRecieved: res.data.id, _isloading: false });

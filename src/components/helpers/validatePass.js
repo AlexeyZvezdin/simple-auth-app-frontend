@@ -5,8 +5,8 @@ const validatePass = pass =>
     let isMatches = matches(
       pass,
       "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[#$^+=!*()@%&]).{7,12}$"
-      // В некоторых случаях реджекс не срабатывает, почему пока еще не разбирался
       // Не работало потому что *d не был экранирован, заменил на [0-9]
+      // К сожалению пропускает пробелы
     );
     if (!isMatches && pass.length > 2) {
       resolve({ SignInPasswordClass: "SignInRedTextField", Password: pass });

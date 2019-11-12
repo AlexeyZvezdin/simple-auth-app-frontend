@@ -57,6 +57,7 @@ export default function SignIn(props) {
     loginIsUndefined: false
   });
 
+  // "null" || props.class
   const [visualState, setVisualState] = useState({
     // @prettier-ignore
     SignInEmailClass: "null",
@@ -80,30 +81,27 @@ export default function SignIn(props) {
         ...visualState,
         SignInEmailClass: res.SignInEmailClass
       });
-      console.log(...state);
     });
   };
 
   const changePass = e => {
-    validatePass(e.target.value)
-      .then(res => {
-        setState({
-          ...state,
-          checks: {
-            ...state.checks,
-            password: res.Check
-          },
-          fields: {
-            ...state.fields,
-            password: res.Password
-          }
-        });
-        setVisualState({
-          ...visualState,
-          SignInPasswordClass: res.SignInPasswordClass
-        });
-      })
-      .then(() => console.log(state));
+    validatePass(e.target.value).then(res => {
+      setState({
+        ...state,
+        checks: {
+          ...state.checks,
+          password: res.Check
+        },
+        fields: {
+          ...state.fields,
+          password: res.Password
+        }
+      });
+      setVisualState({
+        ...visualState,
+        SignInPasswordClass: res.SignInPasswordClass
+      });
+    });
     // then check both fields and show button
   };
 
@@ -148,7 +146,8 @@ export default function SignIn(props) {
           <FormControlLabel
             control={
               <Checkbox
-                value="remember"
+                name="checkbox"
+                value={state.rememberMeCheckBox}
                 color="primary"
                 onChange={() =>
                   setState({

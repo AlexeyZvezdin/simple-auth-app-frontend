@@ -8,7 +8,7 @@ import SignInFormBox from "./components/SignInFormBox";
 import MainAppBar from "./components/MainAppBar";
 import RegisterFormBox from "./components/RegisterFormBox";
 import PrivateRoute from "./components/Profile";
-// import Dialog from "./components/Dialog";
+import Header from "./components/Header";
 import { Main } from "./components/Main";
 import Footer from "./components/Footer";
 
@@ -17,38 +17,6 @@ class App extends React.Component {
     super(props);
   }
 
-  state = {
-    showSignInPopUp: false,
-    showRegisterPopUp: false,
-    isSignIn: false
-  };
-
-  componentDidMount() {}
-
-  handleSignInOnClick = redirect => {
-    if (redirect === "redirect") {
-      this.setState({
-        showSignInPopUp: false,
-        showRegisterPopUp: true
-      });
-      return;
-    }
-
-    this.setState({
-      showSignInPopUp: !this.state.showSignInPopUp,
-      showRegisterPopUp: false
-    });
-  };
-
-  handleRegisterOnClick = () => {
-    this.setState({
-      showSignInPopUp: false,
-      showRegisterPopUp: !this.state.showRegisterPopUp
-    });
-    console.log(" SUCCESSFULL UP TO APP COMPONENT");
-    return;
-  };
-
   onSignOut = () => {
     console.log("sign out");
   };
@@ -56,26 +24,7 @@ class App extends React.Component {
   render() {
     return (
       <Router>
-        {this.state.isSignIn ? (
-          // Версия зарегестрированного АппБара
-          // Это на самом деле всё что мне нужно вроде как доделать, в нем 2 профиля
-          <MainAppBar onSignOut={this.onSignOut} />
-        ) : (
-          <MainAppBar
-            handleSignInOnClick={this.handleSignInOnClick}
-            handleRegisterOnClick={this.handleRegisterOnClick}
-          />
-        )}
-        {this.state.showSignInPopUp === true ? (
-          <SignInFormBox handleOnClick={this.handleSignInOnClick} />
-        ) : (
-          ""
-        )}
-        {this.state.showRegisterPopUp === true ? (
-          <RegisterFormBox handleOnClick={this.handleRegisterOnClick} />
-        ) : (
-          ""
-        )}
+        <Header />
         <Route exact path="/" render={props => <Main {...props} />} />
         <Route
           exact

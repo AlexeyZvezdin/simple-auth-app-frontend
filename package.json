@@ -62,5 +62,5 @@
     "webpack-dev-server": "^3.7.2",
     "webpack-merge": "^4.2.2"
   },
-  "proxy": "localhost:4000"
+  "proxy": "https://localhost:4000"
 }

@@ -5,7 +5,7 @@ export class Footer extends Component {
   render() {
     return (
       <footer>
-        <Author>AlexeyZ</Author>
+        <Author>Me</Author>
       </footer>
     );
   }
