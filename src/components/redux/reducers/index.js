@@ -1,6 +1,11 @@
-import { SIGN_IN, SIGN_OUT, REGISTERED } from "../actionTypes";
+import { SIGN_IN, SIGN_OUT, REGISTERED } from '../actionTypes';
 
-export default function(state = { signed: false }, action) {
+export default function(
+  state = {
+    signed: false
+  },
+  action
+) {
   switch (action.type) {
     case SIGN_IN: {
       return {

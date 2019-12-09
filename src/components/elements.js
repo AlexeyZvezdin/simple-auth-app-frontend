@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { LazyLoadImage } from "react-lazy-load-image-component";
+import styled from 'styled-components';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const RottenBox = styled.div`
   padding-top: 10px;
@@ -43,7 +43,7 @@ const CloseButton = styled.div`
   :after {
     position: absolute;
     left: 15px;
-    content: " ";
+    content: ' ';
     height: 23px;
     top: 5px;
     width: 2px;

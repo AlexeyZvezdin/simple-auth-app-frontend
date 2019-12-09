@@ -1,12 +1,11 @@
-import React from "react";
-import { connect } from "react-redux";
-import isEmail from "validator/lib/isEmail";
-import SignIn from "./SignIn";
-import { BackBox } from "./elements";
-import axios from "axios";
-import { withRouter } from "react-router";
-import Cookies from "js-cookie";
-import { sign_in, sign_out, loggingSignIn } from "./redux/actions/index";
+import React from 'react';
+import { connect } from 'react-redux';
+import axios from 'axios';
+import { withRouter } from 'react-router';
+// import Cookies from 'js-cookie'; - used it before auth header
+import SignIn from './SignIn';
+import { BackBox } from './elements';
+import { sign_in, sign_out } from './redux/actions/index';
 
 class SignInFormBox extends React.Component {
   constructor(props) {
@@ -14,8 +13,10 @@ class SignInFormBox extends React.Component {
   }
 
   state = {
+    // in case of loading
     loading: false,
-    loginIsUndefined: false
+    // in case of server respone is negative
+    creadentialsIsUndefined: false
   };
 
   onSubmit = e => {
@@ -23,43 +24,52 @@ class SignInFormBox extends React.Component {
     let emailV = e.target.email.value;
     let passV = e.target.password.value;
     let checkboxV = e.target.checkbox.value;
+
+    this.setState({ ...state, loading: true });
+
     return axios
-      .post("http://localhost:4000/submit", {
+      .post('http://localhost:4000/submit', {
         email: emailV,
-        password: passV
+        password: passV,
+        validateStatus: function(status) {
+          return status >= 200 && status < 300; // default
+        }
       })
       .then(res => {
-        console.log(res, " THIS IS RES FROM AXIOS");
-        if (res.data === "invalid") {
+        console.log(res, ' THIS IS RES FROM AXIOS');
+        console.log(res.status);
+        console.log(res.statusText);
+        console.log(res.headers);
+        console.log(res.config);
+        if (res.data === 'invalid') {
           // Write an element beneath to response on login undefined
-
           this.setState({
-            _loginIsUndefined: true,
-            _loading: false,
-            checks: {
-              password: null,
-              email: null
-            }
+            creadentialsIsUndefined: true,
+            loading: false
           });
           return;
         } else {
           this.props.handleOnClick();
           this.props.sign_in();
-          this.props.history.push("/profile");
+          this.props.history.push('/profile');
           return res.data;
         }
+      })
+      .catch(err => {
+        console.log('\n ERROR FROM SIGN IN FORMBOX CATCH ', err.message);
       });
   };
 
   render() {
+    console.log(this.props, ' SUP PRIS');
     return (
       <React.Fragment>
         <BackBox>
+          {/* if state.loading ? Waiting... */}
           <SignIn
-            {...this.props}
-            loginIsUndefined={this.state._loginIsUndefined}
+            handleOnClick={this.props.handleOnClick}
+            loginIsUndefined={this.state.creadentialsIsUndefined}
             onSubmit={this.onSubmit}
-            loading={this.state._loading}
           />
         </BackBox>
       </React.Fragment>
@@ -67,17 +77,4 @@ class SignInFormBox extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  const loading = false;
-  const loginIsUndefined = false;
-
-  return {
-    ownProps,
-    loading,
-    loginIsUndefined
-  };
-};
-
-export default withRouter(
-  connect(mapStateToProps, { sign_in, sign_out })(SignInFormBox)
-);
+export default withRouter(connect(null, { sign_in, sign_out })(SignInFormBox));

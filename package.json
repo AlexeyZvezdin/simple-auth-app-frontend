@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --open --config webpack.dev.conf.js",
+    "dev": "webpack-dev-server --config webpack.dev.conf.js",
     "build": "webpack --open --config webpack.build.conf.js",
     "cypress:open": "cypress open"
   },
@@ -29,6 +29,7 @@
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
     "redux": "^4.0.4",
+    "redux-devtools-extension": "^2.13.8",
     "styled-components": "^4.3.2",
     "validator": "^11.1.0"
   },

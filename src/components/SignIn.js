@@ -1,39 +1,42 @@
-import React, { useState } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import { CloseButton } from "./elements.js";
-import validatePass from "../components/helpers/validatePass.js";
-import validateEmail from "../components/helpers/validateEmail";
+import React, { useState } from 'react';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+
+// Elements
+import { CloseButton } from './elements.js';
+// helper function
+import validatePass from '../components/helpers/validatePass.js';
+import validateEmail from '../components/helpers/validateEmail';
 
 const useStyles = makeStyles(theme => ({
-  "@global": {
+  '@global': {
     body: {
       backgroundColor: theme.palette.common.grey
     }
   },
   paper: {
     marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center"
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1)
   },
   submit: {
@@ -44,7 +47,7 @@ const useStyles = makeStyles(theme => ({
 export default function SignIn(props) {
   const classes = useStyles();
   // validation
-
+  console.log(props, ' SUPER PROPS');
   const [state, setState] = useState({
     // @prettier-ignore
     fields: { password: null, email: null },
@@ -60,8 +63,8 @@ export default function SignIn(props) {
   // "null" || props.class
   const [visualState, setVisualState] = useState({
     // @prettier-ignore
-    SignInEmailClass: "null",
-    SignInPasswordClass: "null"
+    SignInEmailClass: 'null',
+    SignInPasswordClass: 'null'
   });
 
   const changeEmail = e => {
@@ -160,21 +163,21 @@ export default function SignIn(props) {
             label="Remember me"
           />
           {serverState.loginIsUndefined === true ? (
-            <span style={{ color: "red" }}>
-              {" "}
+            <span style={{ color: 'red' }}>
+              {' '}
               <br />
               No such Email or Password!
             </span>
           ) : (
-            ""
+            ''
           )}
 
           {serverState.loading ? (
-            <p style={{ color: "blue", margin: "0 auto", fontSize: "1.3em" }}>
+            <p style={{ color: 'blue', margin: '0 auto', fontSize: '1.3em' }}>
               Loading...
             </p>
           ) : (
-            ""
+            ''
           )}
 
           {state.checks.email && state.checks.password ? (
@@ -209,7 +212,7 @@ export default function SignIn(props) {
               <Link
                 href="#"
                 variant="body2"
-                onClick={() => props.handleOnClick("redirect")}
+                onClick={() => props.handleOnClick('redirect')}
               >
                 {"Don't have an account? Sign Up"}
               </Link>

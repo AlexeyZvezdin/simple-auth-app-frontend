@@ -1,9 +1,9 @@
-import React from "react";
-import styled from "styled-components";
-import isEmail from "validator/lib/isEmail";
-import Register from "./Register";
-import { BackBox } from "./elements";
-import axios from "axios";
+import React from 'react';
+import styled from 'styled-components';
+import isEmail from 'validator/lib/isEmail';
+import Register from './Register';
+import { BackBox } from './elements';
+import axios from 'axios';
 
 export default class RegisterFormBox extends React.Component {
   constructor(props) {
@@ -13,7 +13,7 @@ export default class RegisterFormBox extends React.Component {
 
   state = {
     loading: false,
-    saveStatus: "",
+    saveStatus: '',
     alreadyExists: null
   };
 
@@ -22,14 +22,14 @@ export default class RegisterFormBox extends React.Component {
     // тут бинарка на маунт анимации загрузки
     // здесь пропись в бд и респонс с успехом
     return await axios
-      .post("http://localhost:4000/submit", {
+      .post('http://localhost:4000/submit', {
         email: e.target.email.value,
         password: e.target.password.value,
         register: true
       })
       .then(res => {
-        console.log(res, " THIS IS RES FROM AXIOS REGISTER");
-        if (res.data === "registered") {
+        console.log(res, ' THIS IS RES FROM AXIOS REGISTER');
+        if (res.data === 'registered') {
           // Write an element beneath to response on login undefined
 
           this.setState({
@@ -40,12 +40,12 @@ export default class RegisterFormBox extends React.Component {
               email: null
             }
           });
-          this.dispatchEmailClassName("SignInRedTextField");
-          this.dispatchPassClassName("SignInRedTextField");
+          this.dispatchEmailClassName('SignInRedTextField');
+          this.dispatchPassClassName('SignInRedTextField');
           this.CheckFields();
           return;
         } else {
-          console.log(res.data, " ВЫ УСПЕШНО ЗАРЕГЕСТРИРОВАНЫ \n");
+          console.log(res.data, ' ВЫ УСПЕШНО ЗАРЕГЕСТРИРОВАНЫ \n');
           // После этого диспатч в топ и редирект, сокрытие кнопок и форм
           this.props.handleOnClick();
           return res.data;
@@ -58,7 +58,7 @@ export default class RegisterFormBox extends React.Component {
       <React.Fragment>
         <BackBox>
           <Register
-            {...this.props}
+            handleOnClick={this.props.handleOnClick}
             loginIsUndefined={this.state._loginIsUndefined}
             onSubmit={this.onSubmit}
           />

@@ -1,31 +1,24 @@
-import React, { Component, useState } from "react";
-import { Route, Redirect } from "react-router-dom";
-import Cookies from "js-cookie";
-import axios from "axios";
-import styled from "styled-components";
+import React, { Component, useState } from 'react';
+import Cookies from 'js-cookie';
+import axios from 'axios';
+import styled from 'styled-components';
 import ProfileInfoBox, {
   ProfileBox,
   ProfileHeader
-} from "./ProfileElementsFrom";
+} from './ProfileElementsFrom';
 
-class Profile extends Component {
-  constructor(props) {
-    super(props);
-
-    this.id = this.props.isIdRecieved;
-  }
-
+export default class _Profile extends Component {
   state = {
-    name: "",
-    city: "",
-    country: "",
-    surname: "",
-    email: "",
+    name: '',
+    city: '',
+    country: '',
+    surname: '',
+    email: '',
     loading: true
   };
 
   onInputFieldChange = (name, value) => {
-    console.log("state : ", this.state);
+    console.log('state : ', this.state);
     this.setState({
       [name]: value
     });
@@ -33,7 +26,7 @@ class Profile extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:4000/profile", {
+      .get('http://localhost:4000/profile', {
         params: {
           id: this.id
         }
@@ -42,73 +35,29 @@ class Profile extends Component {
         let { name, surname, city, country } = res.data;
         // console.log(res.data, " THIS IS RES GET PROFILE FRONT");
         this.setState({
-          name: name || "",
-          surname: surname || "",
-          city: city || "",
-          country: country || "",
+          name: name || '',
+          surname: surname || '',
+          city: city || '',
+          country: country || '',
           loading: false
         });
+      })
+      .catch(err => {
+        console.log(' THIS IS PROFILE AXIOS REQ ERROR: ', err.message);
       });
   }
 
   render() {
     return this.state.loading ? (
-      <p>LOADING</p>
+      <p>LOADING RPFILE DATA</p>
     ) : (
-      <Route
-        extact
-        path="/profile"
-        render={() =>
-          !this.props._isloading && this.props.isIdRecieved ? (
-            <ProfileBox>
-              <ProfileHeader>Profile {this.state.name}</ProfileHeader>
-              <ProfileInfoBox
-                onInputFieldChange={this.onInputFieldChange}
-                {...this.props}
-                {...this.state}
-              />
-            </ProfileBox>
-          ) : (
-            <Redirect
-              to={{
-                pathname: "/",
-                state: { from: this.props.location }
-              }}
-            />
-          )
-        }
-      />
-    );
-  }
-}
-
-export default class PrivateRoute extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  state = {
-    isIdRecieved: false,
-    _isloading: true
-  };
-
-  componentDidMount() {
-    return axios
-      .post("http://localhost:4000/verify")
-      .then(res => {
-        console.log(res.data.id, " valid token");
-        this.setState({ isIdRecieved: res.data.id, _isloading: false });
-      })
-      .finally(() => {
-        this.setState({ _isloading: false });
-      });
-  }
-
-  render() {
-    return this.state._isloading === true ? (
-      <p> LOADING </p>
-    ) : (
-      <Profile {...this.props} {...this.state} />
+      <ProfileBox>
+        <ProfileHeader>Profile {this.state.name}</ProfileHeader>
+        <ProfileInfoBox
+          onInputFieldChange={this.onInputFieldChange}
+          {...this.state}
+        />
+      </ProfileBox>
     );
   }
 }
